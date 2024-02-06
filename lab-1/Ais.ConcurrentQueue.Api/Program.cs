@@ -18,14 +18,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/tasks/count", ([FromServices] ITaskQueue taskQueue) => taskQueue.Tasks.Count);
-app.MapGet("/tasks/list",  ([FromServices] ITaskQueue taskQueue) => taskQueue.Tasks.Select(x => x.Id).ToArray());
-app.MapPost("/task/add",  ([FromServices] ITaskQueue taskQueue, int waitSeconds) =>
+app.MapGet("/tasks/count", (ITaskQueue taskQueue) => taskQueue.Tasks.Count);
+app.MapGet("/tasks/list",  (ITaskQueue taskQueue) => taskQueue.Tasks.Select(x => x.Id).ToArray());
+app.MapPost("/task/add",  (ITaskQueue taskQueue, int waitSeconds) =>
 {
     taskQueue.Produce(new WaitTask(Random.Shared.Next(), TimeSpan.FromSeconds(waitSeconds)));
     return taskQueue.Tasks.Count;
 });
-app.MapPost("/task/remove",  ([FromServices] ITaskQueue taskQueue, int taskId) =>
+app.MapPost("/task/remove",  (ITaskQueue taskQueue, int taskId) =>
 {
     taskQueue.Remove(taskId);
     return taskQueue.Tasks.Count;
