@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ais.ConcurrentQueue", "lab-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ais.ConcurrentQueue.Api", "lab-1\Ais.ConcurrentQueue.Api\Ais.ConcurrentQueue.Api.csproj", "{15680EA0-AC81-4857-BE67-236F1DB70FCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ais.ConcurrentQueue.Test", "lab-1\Ais.ConcurrentQueue.Test\Ais.ConcurrentQueue.Test.csproj", "{745F8515-E5EB-4550-8179-06A7F7153DB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +28,14 @@ Global
 		{15680EA0-AC81-4857-BE67-236F1DB70FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15680EA0-AC81-4857-BE67-236F1DB70FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15680EA0-AC81-4857-BE67-236F1DB70FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{745F8515-E5EB-4550-8179-06A7F7153DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{745F8515-E5EB-4550-8179-06A7F7153DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{745F8515-E5EB-4550-8179-06A7F7153DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{745F8515-E5EB-4550-8179-06A7F7153DB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A713FF08-4CF4-4BCA-BD46-E45424E60D82} = {FF6F2BC3-EDEA-44DC-B703-7FB2A5F386E5}
 		{15680EA0-AC81-4857-BE67-236F1DB70FCB} = {FF6F2BC3-EDEA-44DC-B703-7FB2A5F386E5}
+		{745F8515-E5EB-4550-8179-06A7F7153DB8} = {FF6F2BC3-EDEA-44DC-B703-7FB2A5F386E5}
 	EndGlobalSection
 EndGlobal

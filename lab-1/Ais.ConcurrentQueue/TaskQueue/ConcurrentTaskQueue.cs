@@ -6,47 +6,74 @@ namespace Ais.ConcurrentQueue.TaskQueue;
 public class ConcurrentTaskQueue : ITaskQueue
 {
     private readonly LinkedList<ITask> _tasks = [];
-    private readonly object _lock = new();
+    private volatile bool _isPaused; // atomic
+    // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/variables#96-atomicity-of-variable-references
+
+    /* lock
+     * Конструкция lock используется для создания критической секции,
+     * в которой только один поток может выполняться в любой момент времени.
+     */
 
     public IReadOnlyCollection<ITask> Tasks
     {
         get
         {
-            lock (_lock)
+            lock (_tasks)
             {
                 return _tasks.ToImmutableList();
             }
         }
     }
 
-    public void Produce(ITask task)
+    public IReadOnlyCollection<ITask> Produce(ITask task)
     {
-        lock (_lock)
+        lock (_tasks)
         {
             _tasks.AddLast(task);
+            Monitor.PulseAll(_tasks);
+            return _tasks.ToImmutableList();
         }
     }
 
-    public ITask? Consume()
+    public ITask Consume()
     {
-        lock (_lock)
+        lock (_tasks)
         {
-            var task = _tasks.Last?.Value;
-            if (task == null)
-                return null;
+            while (_isPaused || _tasks.Count == 0) 
+                Monitor.Wait(_tasks);
 
+            var task = _tasks.First?.Value;
             _tasks.RemoveLast();
-            return task;
+            return task!;
         }
     }
 
-    public void Remove(int taskId)
+    public void PauseProcessing()
     {
-        lock (_lock)
+        lock (_tasks)
+        {
+            _isPaused = true;
+        }
+    }
+
+    public void ResumeProcessing()
+    {
+        lock (_tasks)
+        {
+            _isPaused = false;
+            Monitor.PulseAll(_tasks);
+        }
+    }
+
+    public IReadOnlyCollection<ITask> Remove(int taskId)
+    {
+        lock (_tasks)
         {
             var task = _tasks.FirstOrDefault(t => t.Id == taskId);
-            if (task != null) 
+            if (task != null)
                 _tasks.Remove(task);
+
+            return _tasks.ToImmutableList();
         }
     }
 }

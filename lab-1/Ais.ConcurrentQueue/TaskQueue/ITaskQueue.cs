@@ -6,9 +6,13 @@ public interface ITaskQueue
 {
     IReadOnlyCollection<ITask> Tasks { get; }
     
-    void Produce(ITask task);
+    IReadOnlyCollection<ITask> Produce(ITask task);
 
     ITask? Consume();
 
-    void Remove(int taskId);
+    IReadOnlyCollection<ITask> Remove(int taskId);
+    
+    public void PauseProcessing();
+    
+    public void ResumeProcessing();
 }
