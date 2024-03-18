@@ -9,11 +9,6 @@ public class ConcurrentTaskQueue : ITaskQueue
     private volatile bool _isPaused; // atomic
     // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/variables#96-atomicity-of-variable-references
 
-    /* lock
-     * Конструкция lock используется для создания критической секции,
-     * в которой только один поток может выполняться в любой момент времени.
-     */
-
     public IReadOnlyCollection<ITask> Tasks
     {
         get
@@ -43,7 +38,7 @@ public class ConcurrentTaskQueue : ITaskQueue
                 Monitor.Wait(_tasks);
 
             var task = _tasks.First?.Value;
-            _tasks.RemoveLast();
+            _tasks.RemoveFirst();
             return task!;
         }
     }
